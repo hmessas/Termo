@@ -1,0 +1,10 @@
+import pygame
+import random
+import os
+import unidecode
+import io
+
+def load_text():
+    with io.open("BD","r",encoding="utf8") as f:
+        lines=f.readlines()
+    return (random.choice(lines)).strip()
