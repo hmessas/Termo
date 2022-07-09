@@ -4,7 +4,44 @@ import os
 import unidecode
 import io
 
+WIDTH,HEIGHT=900,900
+
+GREEN = 0,255,127
+ORANGE = 255,165,0
+BLACK=0,0,0
+WHITE=255,255,255
+
+WIN =pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("TERMOOO")
+
+def get_word():
+    while True:
+        for event in pygame.event.get():
+            if event.type==pygame.KEYDOWN:
+
+
+
+
 def load_text():
     with io.open("BD","r",encoding="utf8") as f:
         lines=f.readlines()
-    return (random.choice(lines)).strip()
+    return lines,(random.choice(lines)).strip()
+
+def treat_text(txt):
+    word=unidecode.unidecode(txt).strip()
+    return word
+
+def list_maker(txt):
+    word=[]
+    for char in txt:
+        word.append(char)
+    return word
+
+def main():
+    run=True
+    while run:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                quit()
+
+main()
