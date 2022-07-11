@@ -1,11 +1,12 @@
-from pickle import UNICODE
+
 import pygame
 import random
 import os
 import unidecode
 import io
 
-WIDTH,HEIGHT=900,900
+pygame.font.init()
+WIDTH,HEIGHT=1400,900
 
 GREEN = 0,255,127
 ORANGE = 255,165,0
@@ -18,6 +19,7 @@ alfabeto='abcdefghijklmnopqrstuvwxyz'
 
 WIN =pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("TERMOOO")
+
 
 def get_word(keys_pressed,cw):
     if len(cw)<5:
@@ -89,8 +91,12 @@ def checking(word,cw):
             colors.append(BLACK)
     return colors
             
-
-                
+def draw_init_win():
+    WIN.fill(WHITE)
+    for i in range(0,6):
+        for j in range(0,5):
+            pygame.draw.rect(WIN,BLACK,((WIDTH/2-290)+(120*j),100+(120*i),100,100),5,5)
+    pygame.display.update()            
 
 
 def load_text():
@@ -108,16 +114,38 @@ def list_maker(txt):
         word.append(char)
     return word
 
+def menu():
+    rects_w,rects_h=450,100
+    WIN.fill(WHITE)
+    pygame.draw.rect(WIN,BLACK,(WIDTH/2-rects_w/2,250,rects_w,rects_h),border_radius=5)
+    pygame.draw.rect(WIN,BLACK,(WIDTH/2-rects_w/2,370,rects_w,rects_h),border_radius=5)
+    pygame.draw.rect(WIN,BLACK,(WIDTH/2-rects_w/2,490,rects_w,rects_h),border_radius=5)
+    pygame.display.update()
+    (x,y)=pygame.mouse.get_pos()
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            quit()
+    buttons=pygame.mouse.get_pressed()
+    if buttons[0]==True:
+        if WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 250<y<250+rects_h:
+            print("1")
+        elif WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 370<y<370+rects_h:
+            print('2')
+        elif WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 490<y<490+rects_h:
+            print('3')
+
 def main():
     run=True
     cw=[]
     clock=pygame.time.Clock()
     while run:
         clock.tick(5)
+        menu()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 quit()
         keys_pressed=pygame.key.get_pressed()
         cw=get_word(keys_pressed,cw)
         print(cw)
+
 main()
