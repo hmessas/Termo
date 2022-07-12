@@ -92,9 +92,13 @@ def checking(word,cw,colors):
             colors.append(BLACK)
     return colors
 
-def draw_letters():
-    for i in tries:
-        
+def draw_letters(tries):
+    for c in tries:
+        letter=font.render(c,1,WHITE)
+        for i in range(0,6):
+            for j in range(0,5):
+                WIN.blit(letter,(WIDTH/2-290+((100-letter.get_width())//2)+(120*j),100+(100-letter.get_height())+120*i))    
+    pygame.display.update() 
 
 def draw_init_win():
     WIN.fill(WHITE)
@@ -106,6 +110,8 @@ def draw_init_win():
 def check_vit(cw,word):
     if cw == word:
         return True
+    else:
+        return False
 
 def draw_tries(word,cw,colors,tries):
     cd=checking(word,cw,colors)
@@ -113,15 +119,20 @@ def draw_tries(word,cw,colors,tries):
         tries.append(i)
     cw.clear()
     for c in range(len(tries)):
-        pygame.draw.rect(WIN,cd[c],((WIDTH/2-290)+(120*c),100+(120*c//5),100,100),border_radius=5)
+        pygame.draw.rect(WIN,cd[c],((WIDTH/2-290)+(120*c%5),100+(120*c//5),100,100),border_radius=5)
     pygame.display.update()
-    
+
+def draw_current(cw,nt):
+    for c,char  in enumerate(cw):
+        letter=font.render(char,1,BLACK)
+        WIN.blit(letter,(WIDTH/2-290+((100-letter.get_width())//2)+(120*c),100+(100-letter.get_height())+120*nt))     
+    pygame.display.update()
 
 
 def load_text():
     with io.open("BD","r",encoding="utf8") as f:
         lines=f.readlines()
-    return (random.choice(lines)).strip()
+    return lines,(random.choice(lines)).strip()
 
 def treat_text(txt):
     word=unidecode.unidecode(txt).strip()
@@ -160,18 +171,36 @@ def main():
     run=True
     cw=[]
     clock=pygame.time.Clock()
-    word=list_maker(treat_text(load_text()))
+    pw,txt=load_text()
+    pw_t=[]
+    for i in pw:
+        pw_t.append(unidecode.unidecode(i).strip())
+    word=list_maker(treat_text(txt))
     colors=[]
     tries=[]
+    nt=0
+   
     while run:
-        clock.tick(5)
-
+        clock.tick(10)
         draw_init_win()
+        keys_pressed=pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 quit()
-            if event.type==pygame.K_RETURN:
-                pass
-        keys_pressed=pygame.key.get_pressed()
+            if keys_pressed[pygame.K_RETURN]:
+                test_w=''.join(cw)
+                print(test_w)
+                if test_w in pw_t:
+                    if check_vit(cw,word):
+                        menu()
+                    draw_tries(word,cw,colors,tries)
+                    draw_letters(tries)
+                    nt+=1
+        
+        draw_current(cw,nt)
 
+
+                    
+        keys_pressed=pygame.key.get_pressed()
+        get_word(keys_pressed,cw)
 menu()
