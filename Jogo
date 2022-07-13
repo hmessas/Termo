@@ -77,9 +77,10 @@ def get_word(keys_pressed,cw):
     return cw
         
 def checking(word,tries,colors):
+    colors=[]
     for i,char in enumerate(tries):
         if char in word:
-            if tries[i]==word[i]:
+            if tries[i]==word[i%5]:
                 colors.append(GREEN)
             else:
                 colors.append(ORANGE)
@@ -88,19 +89,17 @@ def checking(word,tries,colors):
     return colors
 
 def draw_letters(tries):
-    for c in tries:
+    for i,c in enumerate(tries):
         letter=font.render(c,1,WHITE)
-        for i in range(0,6):
-            for j in range(0,5):
-                WIN.blit(letter,(WIDTH/2-290+((100-letter.get_width())//2)+(120*j),100+(100-letter.get_height())+120*i))    
-    pygame.display.update() 
+        WIN.blit(letter,(((WIDTH/2-290)+(100-letter.get_width())//2+(120*(i%5))),(100+(100-letter.get_height())+(120*(i//5)))))
+
 
 def draw_init_win():
     WIN.fill(WHITE)
     for i in range(0,6):
         for j in range(0,5):
             pygame.draw.rect(WIN,BLACK,((WIDTH/2-290)+(120*j),100+(120*i),100,100),5,5)
-    pygame.display.update()            
+
 
 def check_vit(cw,word):
     if cw == word:
@@ -108,18 +107,16 @@ def check_vit(cw,word):
     else:
         return False
 
-def draw_tries(word,cw,colors,tries):
-    cd=checking(word,cw,colors)
-
+def draw_tries(colors,tries):
     for c in range(len(tries)):
-        pygame.draw.rect(WIN,cd[c],((WIDTH/2-290)+(120*c%5),100+(120*c//5),100,100),border_radius=5)
-    pygame.display.update()
+        pygame.draw.rect(WIN,colors[c],((WIDTH/2-290)+(120*(c%5)),100+(120*(c//5)),100,100),border_radius=5)
+
 
 def draw_current(cw,nt):
     for c,char  in enumerate(cw):
         letter=font.render(char,1,BLACK)
         WIN.blit(letter,(WIDTH/2-290+((100-letter.get_width())//2)+(120*c),100+(100-letter.get_height())+120*nt))     
-    pygame.display.update()
+
 
 
 def load_text():
@@ -174,7 +171,7 @@ def main():
     nt=0
    
     while run:
-        clock.tick(10)
+        clock.tick(7)
         draw_init_win()
         keys_pressed=pygame.key.get_pressed()
         for event in pygame.event.get():
@@ -182,15 +179,36 @@ def main():
                 quit()
             if keys_pressed[pygame.K_RETURN]:
                 test_w=''.join(cw)
-                print(test_w)
-                if test_w in pw_t:
-                    if check_vit(cw,word):
-                        menu()
-                    nt+=1
-                    for i in cw:
-                        tries.append(i)
+                if len(cw)==5:
+                    if test_w in pw_t:
+                        if check_vit(cw,word):
+                            win_txt=font.render("Você venceu!!!",1,WHITE)
+                            pygame.draw.rect(WIN,BLACK,(WIDTH/2-600/2,250,600,100),border_radius=5)
+                            WIN.blit(win_txt,((WIDTH/2-win_txt.get_width()//2),250+(100-win_txt.get_height())//2))
+                            pygame.display.update()
+                            pygame.time.delay(3000)
+                            menu()
+                        nt+=1
+                        for i in cw:
+                            tries.append(i)
                         cw.clear()
-        draw_tries(word,cw,colors,tries)
+                        colors=checking(word,tries,colors)
+                        if nt==6:
+                            lose_txt=font.render("Você perdeu!!!",1,WHITE)
+                            pygame.draw.rect(WIN,BLACK,(WIDTH/2-600/2,250,600,100),border_radius=5)
+                            WIN.blit(lose_txt,((WIDTH/2-lose_txt.get_width()//2),250+(100-lose_txt.get_height())//2))
+                            pygame.display.update()
+                            pygame.time.delay(3000)
+                            menu()
+                    else:
+                        inval_txt=font.render("Palavra inválida!!!",1,WHITE)
+                        pygame.draw.rect(WIN,BLACK,(WIDTH/2-650/2,250,650,100),border_radius=5)
+                        WIN.blit(inval_txt,((WIDTH/2-inval_txt.get_width()//2),250+(100-inval_txt.get_height())//2))
+                        pygame.display.update()
+                        pygame.time.delay(1000)                        
+
+
+        draw_tries(colors,tries)
         draw_letters(tries)
 
         
@@ -200,4 +218,5 @@ def main():
                     
         keys_pressed=pygame.key.get_pressed()
         get_word(keys_pressed,cw)
+        pygame.display.update()
 menu()
