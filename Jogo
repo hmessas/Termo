@@ -1,4 +1,3 @@
-
 import pygame
 import random
 import unidecode
@@ -30,28 +29,28 @@ def checking(word,tries,colors):
             colors.append(BLACK)
     return colors
 
-def draw_letters(tries):
+def draw_letters_termo(tries):
     for i,c in enumerate(tries):
         letter=font.render(c,1,WHITE)
         WIN.blit(letter,(((WIDTH/2-290)+(100-letter.get_width())//2+(120*(i%5))),(100+(100-letter.get_height())+(120*(i//5)))))
 
-def draw_init_win():
+def draw_init_win_termo():
     WIN.fill(WHITE)
     for i in range(0,6):
         for j in range(0,5):
             pygame.draw.rect(WIN,BLACK,((WIDTH/2-290)+(120*j),100+(120*i),100,100),5,5)
 
-def check_vit(cw,word):
+def check_vit_termo(cw,word):
     if cw == word:
         return True
     else:
         return False
 
-def draw_tries(colors,tries):
+def draw_tries_termo(colors,tries):
     for c in range(len(tries)):
         pygame.draw.rect(WIN,colors[c],((WIDTH/2-290)+(120*(c%5)),100+(120*(c//5)),100,100),border_radius=5)
 
-def draw_current(cw,nt):
+def draw_current_termo(cw,nt):
     for c,char  in enumerate(cw):
         letter=font.render(char,1,BLACK)
         WIN.blit(letter,(WIDTH/2-290+((100-letter.get_width())//2)+(120*c),100+(100-letter.get_height())+120*nt))     
@@ -71,6 +70,27 @@ def list_maker(txt):
         word.append(char)
     return word
 
+
+def draw_init_win_dueto():
+    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def menu():
     while True:
         rects_w,rects_h=450,100
@@ -85,16 +105,19 @@ def menu():
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 quit()
+            if event.type==pygame.KEYDOWN:
+                if event.key==pygame.K_ESCAPE:
+                    quit()
         buttons=pygame.mouse.get_pressed()
         if buttons[0]==True:
             if WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 250<y<250+rects_h:
-                main()
+                main_termo()
             elif WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 370<y<370+rects_h:
                 print('2')
             elif WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 490<y<490+rects_h:
                 print('3')
 
-def main():
+def main_termo():
     run=True
     cw=[]
     clock=pygame.time.Clock()
@@ -109,7 +132,7 @@ def main():
    
     while run:
         clock.tick(7)
-        draw_init_win()
+        draw_init_win_termo()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 quit()
@@ -170,11 +193,14 @@ def main():
                         cw.append("z")   
                 if event.key == pygame.K_BACKSPACE and len(cw)>0:
                     cw.pop()        
+                if event.key == pygame.K_ESCAPE:
+                    quit()
                 if event.key==pygame.K_RETURN:
-                    test_w=''.join(word)
+                    test_w=''.join(cw)
+                    test_y=''.join(word)
                     if len(cw)==5:
                         if test_w in pw_t:
-                            if check_vit(cw,word):
+                            if check_vit_termo(cw,word):
                                 win_txt=font.render("Você venceu!!!",1,WHITE)
                                 pygame.draw.rect(WIN,BLACK,(WIDTH/2-600/2,250,600,100),border_radius=5)
                                 WIN.blit(win_txt,((WIDTH/2-win_txt.get_width()//2),250+(100-win_txt.get_height())//2))
@@ -188,7 +214,7 @@ def main():
                             colors=checking(word,tries,colors)
                             if nt==6:
                                 lose_txt=font.render("Você perdeu!!! A palavra era:",1,WHITE)
-                                asw_txt=font.render(test_w,1,WHITE)
+                                asw_txt=font.render(test_y,1,WHITE)
                                 pygame.draw.rect(WIN,BLACK,(WIDTH/2-1100/2,250,1100,200),border_radius=5)
                                 WIN.blit(lose_txt,((WIDTH/2-lose_txt.get_width()//2),250+(100-lose_txt.get_height())//2))
                                 WIN.blit(asw_txt,((WIDTH/2-asw_txt.get_width()//2),350+(100-asw_txt.get_height())//2))
@@ -201,9 +227,9 @@ def main():
                             WIN.blit(inval_txt,((WIDTH/2-inval_txt.get_width()//2),250+(100-inval_txt.get_height())//2))
                             pygame.display.update()
                             pygame.time.delay(1000)     
-        draw_tries(colors,tries)
-        draw_letters(tries)
-        draw_current(cw,nt)           
+        draw_tries_termo(colors,tries)
+        draw_letters_termo(tries)
+        draw_current_termo(cw,nt)           
         pygame.display.update()
 
 menu()
