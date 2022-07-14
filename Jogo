@@ -178,7 +178,7 @@ def main():
             if event.type==pygame.QUIT:
                 quit()
             if keys_pressed[pygame.K_RETURN]:
-                test_w=''.join(cw)
+                test_w=''.join(word)
                 if len(cw)==5:
                     if test_w in pw_t:
                         if check_vit(cw,word):
@@ -194,9 +194,11 @@ def main():
                         cw.clear()
                         colors=checking(word,tries,colors)
                         if nt==6:
-                            lose_txt=font.render("Você perdeu!!!",1,WHITE)
-                            pygame.draw.rect(WIN,BLACK,(WIDTH/2-600/2,250,600,100),border_radius=5)
+                            lose_txt=font.render("Você perdeu!!! A palavra era:",1,WHITE)
+                            asw_txt=font.render(test_w,1,WHITE)
+                            pygame.draw.rect(WIN,BLACK,(WIDTH/2-1100/2,250,1100,200),border_radius=5)
                             WIN.blit(lose_txt,((WIDTH/2-lose_txt.get_width()//2),250+(100-lose_txt.get_height())//2))
+                            WIN.blit(asw_txt,((WIDTH/2-asw_txt.get_width()//2),350+(100-asw_txt.get_height())//2))
                             pygame.display.update()
                             pygame.time.delay(3000)
                             menu()
@@ -206,7 +208,7 @@ def main():
                         WIN.blit(inval_txt,((WIDTH/2-inval_txt.get_width()//2),250+(100-inval_txt.get_height())//2))
                         pygame.display.update()
                         pygame.time.delay(1000)                        
-
+            
 
         draw_tries(colors,tries)
         draw_letters(tries)
