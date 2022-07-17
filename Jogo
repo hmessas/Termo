@@ -1,4 +1,3 @@
-from operator import contains
 import pygame
 import random
 import unidecode
@@ -7,6 +6,7 @@ import io
 pygame.font.init()
 font1=pygame.font.SysFont("comicsans",80)
 font2=pygame.font.SysFont("comicsans",64)
+font3=pygame.font.SysFont("comicsans",56)
 
 WIDTH,HEIGHT=1400,900
 
@@ -75,7 +75,7 @@ def list_maker(txt):
 def check_vit_dueto(word1,word2,tries_list):
     w1=''.join(word1)
     w2=''.join(word2)
-    if w1 and w2 in tries_list:
+    if w1 in tries_list and w2 in tries_list:
         return True
     else:
         return False
@@ -264,7 +264,262 @@ def main_dueto():
         draw_letters_dueto(tries,word1,word2,tries_list)
         draw_current_dueto(cw,nt,word1,word2,tries_list)           
         pygame.display.update()
-        
+
+def draw_init_win_quarteto():
+    WIN.fill(WHITE)
+    for i in range(0,10):
+        for j in range(0,5):
+            pygame.draw.rect(WIN,BLACK,(355+(65*j),123+(65*i),60,60),3,3)
+            pygame.draw.rect(WIN,BLACK,(705+(65*j),123+(65*i),60,60),3,3)
+            pygame.draw.rect(WIN,BLACK,(1055+(65*j),123+(65*i),60,60),3,3)
+            pygame.draw.rect(WIN,BLACK,(5+(65*j),123+(65*i),60,60),3,3)
+
+def check_vit_quarteto(word1,word2,word3,word4,tries_list):
+    w1=''.join(word1)
+    w2=''.join(word2)
+    w3=''.join(word3)
+    w4=''.join(word4)
+    if w1 in tries_list and w2 in tries_list and w3 in tries_list and w4 in tries_list:
+        return True
+    else:
+        return False
+
+def draw_tries_quarteto(colors1,colors2,colors3,colors4,tries,tries_list,word1,word2,word3,word4):
+    w1=''.join(word1)
+    w2=''.join(word2)
+    w3=''.join(word3)
+    w4=''.join(word4)
+    if w1 in tries_list:
+        i1=tries_list.index(w1)
+        for c in range((i1+1)*5):
+            pygame.draw.rect(WIN,colors1[c],(5+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    else:
+        for c in range(len(tries)):
+            pygame.draw.rect(WIN,colors1[c],(5+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    if w2 in tries_list:
+        i2=tries_list.index(w2)
+        for c in range((1+i2)*5):
+            pygame.draw.rect(WIN,colors2[c],(355+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    else:
+        for c in range(len(tries)):
+            pygame.draw.rect(WIN,colors2[c],(355+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    if w3 in tries_list:
+        i3=tries_list.index(w3)
+        for c in range((1+i3)*5):
+            pygame.draw.rect(WIN,colors3[c],(705+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    else:
+        for c in range(len(tries)):
+            pygame.draw.rect(WIN,colors3[c],(705+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    if w4 in tries_list:
+        i4=tries_list.index(w4)
+        for c in range((1+i4)*5):
+            pygame.draw.rect(WIN,colors4[c],(1055+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+    else:
+        for c in range(len(tries)):
+            pygame.draw.rect(WIN,colors4[c],(1055+(65*(c%5)),123+(65*(c//5)),60,60),border_radius=3)
+
+def draw_letters_quarteto(tries,word1,word2,word3,word4,tries_list):
+    w1=''.join(word1)
+    w2=''.join(word2)
+    w3=''.join(word3)
+    w4=''.join(word4)
+    for i,c in enumerate(tries):
+        letter=font3.render(c,1,WHITE)
+        if w1 in tries_list:
+            i1=tries_list.index(w1)
+            if i < ((i1+1)*5):
+                WIN.blit(letter,((5+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        else:
+            WIN.blit(letter,((5+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        if w2 in tries_list:
+            i2=tries_list.index(w2)
+            if i < ((i2+1)*5):
+                WIN.blit(letter,((355+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        else:
+            WIN.blit(letter,((355+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        if w3 in tries_list:
+            i3=tries_list.index(w3)
+            if i < ((i3+1)*5):
+                WIN.blit(letter,((705+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        else:
+            WIN.blit(letter,((705+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        if w4 in tries_list:
+            i4=tries_list.index(w4)
+            if i < ((i4+1)*5):
+                WIN.blit(letter,((1055+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+        else:
+            WIN.blit(letter,((1055+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(i//5)))))
+
+def draw_current_quarteto(cw,nt,word1,word2,word3,word4,tries_list):
+    w1=''.join(word1)
+    w2=''.join(word2)
+    w3=''.join(word3)
+    w4=''.join(word4)
+    for i,c in enumerate(cw):
+        letter=font3.render(c,1,BLACK)
+        if w1 in tries_list:
+            i1=tries_list.index(w1)
+            if nt < i1:
+                WIN.blit(letter,((5+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        else:
+            WIN.blit(letter,((5+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        if w2 in tries_list:
+            i2=tries_list.index(w2)
+            if nt <i2:
+                WIN.blit(letter,((355+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        else:
+            WIN.blit(letter,((355+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        if w3 in tries_list:
+            i3=tries_list.index(w3)
+            if nt < i3:
+                WIN.blit(letter,((705+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        else:
+            WIN.blit(letter,((705+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        if w4 in tries_list:
+            i4=tries_list.index(w4)
+            if nt < i4:
+                WIN.blit(letter,((1055+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+        else:
+            WIN.blit(letter,((1055+(60-letter.get_width())//2+65*(i%5)),(123+(60-letter.get_height())//2+(65*(nt)))))
+
+def main_quarteto():
+    run=True
+    cw=[]
+    clock=pygame.time.Clock()
+    pw,txt1=load_text()
+    pw,txt2=load_text()
+    pw,txt3=load_text()
+    pw,txt4=load_text()
+    pw_t=[]
+    for i in pw:
+        pw_t.append(unidecode.unidecode(i).strip())
+    word1=list_maker(treat_text(txt1))
+    word2=list_maker(treat_text(txt2))
+    word3=list_maker(treat_text(txt3))
+    word4=list_maker(treat_text(txt4))
+    colors1=[]
+    colors2=[]
+    colors3=[]
+    colors4=[]
+    tries=[]
+    nt=0
+    tries_list=[]
+    h=0
+    while run:
+        clock.tick(7)
+        draw_init_win_quarteto()
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                quit()
+
+            if event.type==pygame.KEYDOWN:
+                if len(cw)<5:
+                    if event.key == pygame.K_a:
+                        cw.append("a")
+                    if event.key == pygame.K_b:
+                        cw.append("b")
+                    if event.key == pygame.K_c:
+                        cw.append("c")
+                    if event.key == pygame.K_d:
+                        cw.append("d")
+                    if event.key == pygame.K_e:
+                        cw.append("e")
+                    if event.key == pygame.K_f:
+                        cw.append("f")
+                    if event.key == pygame.K_g:
+                        cw.append("g")
+                    if event.key == pygame.K_h:
+                        cw.append("h")
+                    if event.key == pygame.K_i:
+                        cw.append("i")
+                    if event.key == pygame.K_j:
+                        cw.append("j")
+                    if event.key == pygame.K_k:
+                        cw.append("k")
+                    if event.key == pygame.K_l:
+                        cw.append("l")
+                    if event.key == pygame.K_m:
+                        cw.append("m")
+                    if event.key == pygame.K_n:
+                        cw.append("n")
+                    if event.key == pygame.K_o:
+                        cw.append("o")
+                    if event.key == pygame.K_p:
+                        cw.append("p")
+                    if event.key == pygame.K_q:
+                        cw.append("q")
+                    if event.key == pygame.K_r:
+                        cw.append("r")
+                    if event.key == pygame.K_s:
+                        cw.append("s")
+                    if event.key == pygame.K_t:
+                        cw.append("t")
+                    if event.key == pygame.K_u:
+                        cw.append("u")
+                    if event.key == pygame.K_v:
+                        cw.append("v")
+                    if event.key == pygame.K_w:
+                        cw.append("w")
+                    if event.key == pygame.K_x:
+                        cw.append("x")
+                    if event.key == pygame.K_y:
+                        cw.append("y")
+                    if event.key == pygame.K_z:
+                        cw.append("z")   
+                if event.key == pygame.K_BACKSPACE and len(cw)>0:
+                    cw.pop()        
+                if event.key == pygame.K_ESCAPE:
+                    quit()
+                if event.key==pygame.K_RETURN:
+                    test_w=''.join(cw)
+                    test_y1=''.join(word1)
+                    test_y2=''.join(word2)
+                    test_y3=''.join(word3)
+                    test_y4=''.join(word4)
+                    if len(cw)==5:
+                        if test_w in pw_t:
+                            nt+=1   
+                            for i in cw:
+                                tries.append(i)
+                            tries_list.append(test_w)
+                            cw.clear()
+                            colors1=checking(word1,tries,colors1)
+                            colors2=checking(word2,tries,colors2)
+                            colors3=checking(word3,tries,colors3)
+                            colors4=checking(word4,tries,colors4)
+                            if nt==10:
+                                lose_txt=font1.render("Você perdeu!!! As palavras eram:",1,WHITE)
+                                asw_txt1=font1.render(test_y1,1,WHITE)
+                                asw_txt2=font1.render(test_y2,1,WHITE)
+                                asw_txt3=font1.render(test_y3,1,WHITE)
+                                asw_txt4=font1.render(test_y4,1,WHITE)
+                                pygame.draw.rect(WIN,BLACK,(WIDTH/2-1200/2,250,1200,300),border_radius=5)
+                                WIN.blit(lose_txt,((WIDTH/2-lose_txt.get_width()//2),250+(100-lose_txt.get_height())//2))
+                                WIN.blit(asw_txt1,((WIDTH/2-asw_txt1.get_width())-10,350+(100-asw_txt1.get_height())//2))
+                                WIN.blit(asw_txt2,((WIDTH/2+10),350+(100-asw_txt2.get_height())//2))
+                                WIN.blit(asw_txt3,((WIDTH/2-asw_txt1.get_width())-10,450+(100-asw_txt1.get_height())//2))
+                                WIN.blit(asw_txt4,((WIDTH/2+10),450+(100-asw_txt2.get_height())//2))
+                                pygame.display.update()
+                                pygame.time.delay(3000)
+                                menu()
+                            if check_vit_quarteto(word1,word2,word3,word4,tries_list):
+                                win_txt=font1.render("Você venceu!!!",1,WHITE)
+                                pygame.draw.rect(WIN,BLACK,(WIDTH/2-600/2,250,600,100),border_radius=5)
+                                WIN.blit(win_txt,((WIDTH/2-win_txt.get_width()//2),250+(100-win_txt.get_height())//2))
+                                pygame.display.update()
+                                pygame.time.delay(3000)
+                                menu()
+                        else:
+                            inval_txt=font1.render("Palavra inválida!!!",1,WHITE)
+                            pygame.draw.rect(WIN,BLACK,(WIDTH/2-650/2,250,650,100),border_radius=5)
+                            WIN.blit(inval_txt,((WIDTH/2-inval_txt.get_width()//2),250+(100-inval_txt.get_height())//2))
+                            pygame.display.update()
+                            pygame.time.delay(1000)     
+        draw_tries_quarteto(colors1,colors2,colors3,colors4,tries,tries_list,word1,word2,word3,word4)
+        draw_letters_quarteto(tries,word1,word2,word3,word4,tries_list)
+        draw_current_quarteto(cw,nt,word1,word2,word3,word4,tries_list)           
+        pygame.display.update()
+
 def menu():
     while True:
         rects_w,rects_h=450,100
@@ -291,7 +546,7 @@ def menu():
             elif WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 370<y<370+rects_h:
                 main_dueto()
             elif WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 490<y<490+rects_h:
-                print('3')
+                main_quarteto()
 
 def main_termo():
     run=True
