@@ -163,7 +163,7 @@ def main_dueto():
         draw_init_win_dueto()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
-                quit()
+                pygame.quit()
 
             if event.type==pygame.KEYDOWN:
                 if len(cw)<5:
@@ -222,7 +222,7 @@ def main_dueto():
                 if event.key == pygame.K_BACKSPACE and len(cw)>0:
                     cw.pop()        
                 if event.key == pygame.K_ESCAPE:
-                    quit()
+                    pygame.quit()
                 if event.key==pygame.K_RETURN:
                     test_w=''.join(cw)
                     test_y1=''.join(word1)
@@ -410,7 +410,7 @@ def main_quarteto():
         draw_init_win_quarteto()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
-                quit()
+                pygame.quit()
 
             if event.type==pygame.KEYDOWN:
                 if len(cw)<5:
@@ -469,7 +469,7 @@ def main_quarteto():
                 if event.key == pygame.K_BACKSPACE and len(cw)>0:
                     cw.pop()        
                 if event.key == pygame.K_ESCAPE:
-                    quit()
+                    pygame.quit()
                 if event.key==pygame.K_RETURN:
                     test_w=''.join(cw)
                     test_y1=''.join(word1)
@@ -527,18 +527,20 @@ def menu():
         pygame.draw.rect(WIN,BLACK,(WIDTH/2-rects_w/2,250,rects_w,rects_h),border_radius=5)
         texto_t=font1.render("Termo",1,WHITE)
         texto_d=font1.render("Dueto",1,WHITE)
+        texto_q=font1.render("Quarteto",1,WHITE)
         WIN.blit(texto_t,((WIDTH/2-texto_t.get_width()//2),250+(rects_h-texto_t.get_height())//2))
         pygame.draw.rect(WIN,BLACK,(WIDTH/2-rects_w/2,370,rects_w,rects_h),border_radius=5)
         WIN.blit(texto_d,((WIDTH/2-texto_d.get_width()//2),370+(rects_h-texto_d.get_height())//2))
         pygame.draw.rect(WIN,BLACK,(WIDTH/2-rects_w/2,490,rects_w,rects_h),border_radius=5)
+        WIN.blit(texto_q,((WIDTH/2-texto_q.get_width()//2),490+(rects_h-texto_q.get_height())//2))
         pygame.display.update()
         (x,y)=pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
-                quit()
+                pygame.quit()
             if event.type==pygame.KEYDOWN:
                 if event.key==pygame.K_ESCAPE:
-                    quit()
+                    pygame.quit()
         buttons=pygame.mouse.get_pressed()
         if buttons[0]==True:
             if WIDTH/2-rects_w/2<x<WIDTH/2-rects_w/2+rects_w and 250<y<250+rects_h:
@@ -566,7 +568,7 @@ def main_termo():
         draw_init_win_termo()
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
-                quit()
+                pygame.quit()
 
             if event.type==pygame.KEYDOWN:
                 if len(cw)<5:
@@ -625,7 +627,7 @@ def main_termo():
                 if event.key == pygame.K_BACKSPACE and len(cw)>0:
                     cw.pop()        
                 if event.key == pygame.K_ESCAPE:
-                    quit()
+                    pygame.quit()
                 if event.key==pygame.K_RETURN:
                     test_w=''.join(cw)
                     test_y=''.join(word)
